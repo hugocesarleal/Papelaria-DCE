@@ -16,7 +16,7 @@ Este projeto é o trabalho final da disciplina de Desenvolvimento Web e será ut
 1. Clone o repositório:
 
     ```bash
-    git clone https://github.com/hugocesarleal/papelaria.git
+    git clone (https://github.com/hugocesarleal/Papelaria-DCE.git)
     cd papelaria
     ```
 
@@ -33,7 +33,7 @@ Este projeto é o trabalho final da disciplina de Desenvolvimento Web e será ut
     pip install -r requirements.txt
     ```
 
-4. Configure o arquivo [.env](http://_vscodecontentref_/2) com as variáveis de ambiente necessárias. Use o arquivo `.env.example` como referência.
+4. Configure o arquivo [.env](http://_vscodecontentref_/2) com as variáveis de ambiente necessárias.
 
 5. Inicialize o banco de dados:
 
