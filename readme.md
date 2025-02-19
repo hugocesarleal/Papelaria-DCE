@@ -16,7 +16,7 @@ Este projeto é o trabalho final da disciplina de Desenvolvimento Web e será ut
 1. Clone o repositório:
 
     ```bash
-    git clone (https://github.com/hugocesarleal/Papelaria-DCE.git)
+    git clone https://github.com/hugocesarleal/Papelaria-DCE.git
     cd papelaria
     ```
 
