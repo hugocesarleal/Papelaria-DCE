@@ -1,0 +1,229 @@
+{% load static %}
+{% load custom_tags %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Sistema{% endblock %}</title>
+    <link rel="icon" href="{% static 'img/favicon.ico' %}">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/@coreui/coreui@5.2.0/dist/css/coreui.min.css" rel="stylesheet" integrity="sha384-u3h5SFn5baVOWbh8UkOrAaLXttgSF0vXI15ODtCSxl0v/VKivnCN6iHCcvlyTL7L" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@coreui/icons/css/all.min.css">  
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{% static 'css/base_mobile.css' %}">
+
+    {% block head %}
+    {% endblock %}
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@coreui/coreui@5.2.0/dist/js/coreui.bundle.min.js" integrity="sha384-JdRP5GRWP6APhoVS1OM/pOKMWe7q9q8hpl+J2nhCfVJKoS+yzGtELC5REIYKrymn" crossorigin="anonymous"></script>
+
+    <style>
+        {% block style %}
+        {% endblock %}
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand ml-2" href="#"><i class="fas fa-paperclip"></i> Papelaria DCE</a>
+            {% if request.path == '/' %}
+                <div class="d-flex align-items-center ms-auto mr-3" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#modalExemplo">
+                    {% is_papelaria_aberta as papelaria_aberta %}
+                    {% if papelaria_aberta %}
+                        <div class="alert alert-success d-flex align-items-center p-1 m-0" role="alert" style="font-size: 0.8em;">
+                            <i class="fas fa-door-open me-1" style="font-size: 1.2em;"></i>
+                            <div>Aberta</div>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-danger d-flex align-items-center p-1 m-0" role="alert" style="font-size: 0.8em;">
+                            <i class="fas fa-door-closed me-1" style="font-size: 1.2em;"></i>
+                            <div>Fechada</div>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endif %}
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            {% if user.is_superuser %}
+                <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                    <ul class="navbar-nav me-auto customNavBar">
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{% url 'core:home' %}"><i class="fas fa-home"></i> Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.path == '/usuarios/' %}active{% endif %}" href="{% url 'usuarios:usuarios' %}"><i class="fas fa-user"></i> Usuários</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.path == '/estoque/' %}active{% endif %}" href="{% url 'estoque:listar-estoque-admin' %}"><i class="fas fa-boxes"></i> Estoque</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.path == '/clientes/' %}active{% endif %}" href="{% url 'clientes:admin-clientes' %}"><i class="fas fa-users"></i> Clientes</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.path == '/pontos/consulta-pontos/' %}active{% endif %}" href="{% url 'pontos:consulta_pontos' %}"><i class="fas fa-receipt"></i> Pontos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.path == '/vendas/' %}active{% endif %}" href="{% url 'vendas:vendas-admin' %}"><i class="fas fa-shopping-cart"></i> Vendas</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.path == '/avisos/' %}active{% endif %}" href="{% url 'avisos:listar-avisos' %}"><i class="fas fa-bell"></i> Avisos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.path == '/horarios/' %}active{% endif %}" href="{% url 'horarios:gerenciar-horarios' %}"><i class="fas fa-clock"></i> Horários</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.path == '/duvidas/' %}active{% endif %}" href="{% url 'duvidas:responder_duvidas' %}"><i class="fas fa-question-circle"></i> Dúvidas</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'core:logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                        </li>
+                    </ul>
+                </div>
+            {% elif user.is_authenticated %}
+                <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                    <ul class="navbar-nav me-auto customNavBar">
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{% url 'core:home' %}"><i class="fas fa-home"></i> Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.path == '/vendas/painel-mobile/' %}active{% endif %}" href="{% url 'vendas:painel-mobile' %}"><i class="fas fa-upload"></i> Upload Comprovante</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'core:logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                        </li>
+                    </ul>
+                </div>
+            {% else %}
+                <!--Não está logado-->
+                <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                    <ul class="navbar-nav me-auto customNavBar">
+                        <li class="nav-item mt-1">
+                            <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{% url 'core:home' %}"><i class="fas fa-home"></i> Home</a>
+                        </li>
+                        <li class="nav-item mt-1">
+                            <a class="nav-link" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#modalExemplo"><i class="fas fa-bell"></i> Avisos</a>
+                        </li>
+                        <li class="nav-item mt-1">
+                            <a class="nav-link" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#modalHorarios"><i class="fas fa-clock"></i> Horários</a>
+                        </li>
+                    </ul>
+                    <div class="d-flex align-items-center mt-2">
+                        <i class="fas fa-user user-icon text-light"></i>
+                        <div class="dropdown">
+                            <button 
+                                class="btn btn-light dropdown-toggle" 
+                                type="button" 
+                                data-bs-toggle="dropdown" 
+                                aria-expanded="false">
+                                {% if user.is_authenticated %}{{ user.username }}{% else %}Login{% endif %}
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end custom-dropdown-menu p-3">
+                                {% if not user.is_authenticated %}
+                                    <form method="POST" action="{% url 'core:login' %}">
+                                        {% csrf_token %}
+                                        <div class="mb-3">
+                                            <label for="username" class="form-label">Usuário:</label>
+                                            <input type="text" class="form-control" name="username" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="password" class="form-label">Senha:</label>
+                                            <input type="password" class="form-control" name="password" required>
+                                        </div>
+                                        <div class="mb-3 form-check">
+                                            <input type="checkbox" class="form-check-input" id="remember_me" name="remember_me">
+                                            <label class="form-check-label" for="remember_me" style="font-size: 0.8rem;">Manter conectado</label>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary w-100">Entrar</button>
+                                    </form>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li>
+                                        <a class="dropdown-item" id="btnEsqueciSenha">Esqueceu a senha?</a>
+                                    </li>
+                                {% else %}
+                                    <li>
+                                        <a class="dropdown-item" href="{% url 'core:logout' %}">Logout</a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </nav>
+
+    <div class="modal fade" id="modalHorarios" tabindex="-1" aria-labelledby="modalHorariosLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+          <h5 class="modal-title" id="modalHorariosLabel">Horários</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+          <table class="table table-striped table-sm table-hover">
+            <thead class="table-dark text-center align-middle">
+            <tr>
+              <th style="width: 20%; font-size: 0.9rem; border-left: 2px solid gray; border-top: 2px solid gray; border-bottom: 2px solid gray;">Dia</th>
+              <th style="width: 40%; font-size: 0.9rem; border-top: 2px solid gray; border-bottom: 2px solid gray;">Horário de Abertura</th>
+              <th style="width: 40%; font-size: 0.9rem; border-right: 2px solid gray; border-top: 2px solid gray; border-bottom: 2px solid gray;">Horário de Fechamento</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% regroup horarios by get_dia_semana_display as grouped_horarios %}
+            {% for group in grouped_horarios %}
+              {% for horario in group.list %}
+              <tr style="border-left: 2px solid gray; border-right: 2px solid gray; {% if forloop.last %}border-bottom: 2px solid gray;{% endif %}">
+                {% if forloop.first %}
+                <td class="text-center align-middle" style="font-size: 0.9rem;" rowspan="{{ group.list|length }}">{{ group.grouper }}</td>
+                {% endif %}
+                <td class="text-center align-middle" style="font-size: 0.9rem;">{{ horario.abertura }}</td>
+                <td class="text-center align-middle" style="font-size: 0.9rem;">{{ horario.fechamento }}</td>
+              </tr>
+              {% endfor %}
+            {% endfor %}
+            </tbody>
+          </table>
+          </div>
+        </div>
+        </div>
+      </div>
+
+    <div class="content">
+        {% block body %}
+        {% endblock %}
+    </div>
+</body>
+<script src="{% static 'js/base_mobile.js' %}"></script>
+
+<script>
+    {% block script %}
+    {% endblock %}
+
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                toastr.error("{{ message }}");
+            {% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                toastr.success("{{ message }}");
+            {% elif message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+                toastr.warning("{{ message }}");
+            {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+                toastr.info("{{ message }}");
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+</script>
+
+{% block scriptsrc %}
+{% endblock %}
+</html>
